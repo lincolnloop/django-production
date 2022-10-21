@@ -34,7 +34,7 @@ You should add `django-production` to your requirements to keep the necessary de
 * `ALLOWED_HOSTS` - a comma-separated list of allowed hosts
 * `DEBUG` - defaults to `False` you probably don't want to change that
 * `DATABASE_URL` - a database URL (see https://django-environ.readthedocs.io/en/latest/types.html#environ-env-db-url)
-* `CACHE_URL` or `REDIS_URL` - a cache URL (see https://django-environ.readthedocs.io/en/latest/api.html#environ.Env.cache_url
+* `CACHE_URL` or `REDIS_URL` - a cache URL (see https://django-environ.readthedocs.io/en/latest/types.html#environ-env-cache-url)
 * `SECURE_HSTS_INCLUDE_SUBDOMAINS` - set this to `True` if your site doesn't have any subdomains that need to use HTTP
 
 ## Answers
