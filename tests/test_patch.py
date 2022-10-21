@@ -55,6 +55,7 @@ def test_cli():
     assert START_MARKER in Path("testproj/urls.py").read_text()
     assert START_MARKER in Path("testproj/settings.py").read_text()
 
+
 def test_idempotent():
     """Patch is only applied once"""
     settings_file = Path("testproj/settings.py")
@@ -65,6 +66,7 @@ def test_idempotent():
     settings_file.write_text(orig_settings)
     with pytest.raises(RuntimeError):
         do_patch()
+
 
 def test_python():
     """Python code is functional after patching"""
