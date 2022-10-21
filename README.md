@@ -51,6 +51,15 @@ Django takes an un-opinionated approach to how it should be deployed. This makes
 **I disagree with the settings/packages you're using.**
 Not a question, but ok. Feel free to submit an issue or pull request with your suggestion and reasoning. We appreciate the feedback and contributions. We may not accept changes that we don't feel fit the spirit of this project (remember, it's _opinionated_). If you're unsure, don't hesitate to ask.
 
+## Publishing a new version
+
+1. Update the version in `django_production/__init__.py`
+2. Update the changelog in `CHANGELOG.md`
+3. Commit the changes
+4. Tag the commit with the version number (`git tag -s v0.9.9 -m v0.9.9`)
+5. Push the commit and tag (`git push && git push --tags`)
+6. Publish to PyPI `flit publish`
+
 ## To Do
 
 * Handle media settings for common object stores
