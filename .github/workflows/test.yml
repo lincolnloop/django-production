@@ -1,0 +1,18 @@
+---
+on: [push]
+name: Test
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+        with:
+          python-version: 3.10
+      - name: Install
+        run: |
+          python -m venv --upgrade-deps .venv
+          . .venv/bin/activate
+          pip install -e '.[test]'
+      - name: Test
+        run: pytest --cov

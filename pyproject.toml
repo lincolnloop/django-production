@@ -1,0 +1,32 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "django_production"
+description-file = "README.md"
+authors = [{name = "Peter Baumgartner", email = "pete@lincolnloop.com"}]
+license = {file = "LICENSE"}
+classifiers = ["License :: OSI Approved :: MIT License"]
+dynamic = ["version", "description"]
+dependencies = [
+    "django-environ",
+    "whitenoise",
+    "django-webserver[gunicorn]",
+    "django-alive",
+]
+keywords = ["django", "production", "deployment"]
+
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov"
+]
+
+[project.scripts]
+django-production-apply = "django_production.__main__:do_patch"
+
+[project.urls]
+Home = "https://github.com/lincolnloop/django-production"
+Issues = "https://github.com/lincolnloop/django-production/issues"
