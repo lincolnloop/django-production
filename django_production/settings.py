@@ -3,7 +3,7 @@ import re
 
 import environ
 
-env = environ.Env()
+env = environ.FileAwareEnv()
 
 DJANGO_ENV = env.str("DJANGO_ENV", "dev")
 

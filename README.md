@@ -41,6 +41,8 @@ Set the `WEB_CONCURRENCY` environment variable to the number of gunicorn workers
 * `CACHE_URL` or `REDIS_URL` - a cache URL (see https://django-environ.readthedocs.io/en/latest/types.html#environ-env-cache-url)
 * `SECURE_HSTS_INCLUDE_SUBDOMAINS` - set this to `True` if your site doesn't have any subdomains that need to use HTTP
 
+Under the hood, `django-production` uses `django-environ`'s [`FileAwareEnv`](https://django-environ.readthedocs.io/en/latest/tips.html#docker-style-file-based-variables) class to read environment variables. This allows you to append `_FILE` to any environment variable to load the value from a file. For example, `DATABASE_URL_FILE=/var/run/secrets/DATABASE_URL` will load the database URL from that file.
+
 ## Answers
 
 You didn't ask any questions, but if you did, maybe it would be one of these:
