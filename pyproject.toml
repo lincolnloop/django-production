@@ -35,6 +35,7 @@ django-production-apply = "django_production.__main__:do_patch"
 [project.urls]
 Home = "https://github.com/lincolnloop/django-production"
 Issues = "https://github.com/lincolnloop/django-production/issues"
+Changelog = "https://github.com/lincolnloop/django-production/blob/main/CHANGELOG.md"
 
 [tool.flit.module]
 name = "django_production"
