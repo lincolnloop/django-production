@@ -2,6 +2,7 @@ import os
 import sys
 from importlib import import_module
 from pathlib import Path
+from string import Template
 from types import ModuleType
 
 import django
@@ -17,9 +18,16 @@ def patch_settings(settings: ModuleType) -> None:
         raise RuntimeError(
             "It looks like this settings file already contains the django-production patch."
         )
-    patch = "\n".join([START_MARKER, production_settings_file.read_text(), END_MARKER])
+    # assuming top-level module is the project
+    # used to determine where static files directories should live
+    settings_module_depth = len(settings.__name__.split(".")) - 2
+    if settings_module_depth < 0:
+        settings_module_depth = 0
+    settings_patch = Template(production_settings_file.read_text()).safe_substitute(
+        settings_depth=str(settings_module_depth)
+    )
     with settings_file.open(mode="a") as f:
-        f.write(patch)
+        f.write("\n".join([START_MARKER, settings_patch, END_MARKER]))
 
 
 def patch_urlconf(settings: ModuleType) -> None:

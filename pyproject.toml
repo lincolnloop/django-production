@@ -26,7 +26,8 @@ keywords = ["django", "production", "deployment"]
 [project.optional-dependencies]
 test = [
     "pytest",
-    "pytest-cov"
+    "pytest-cov",
+    "urllib3",
 ]
 
 [project.scripts]

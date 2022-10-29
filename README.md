@@ -22,6 +22,8 @@ Running `django-production-apply` will append the `django-production` settings t
 
 You should add `django-production` to your requirements to keep the necessary dependencies in place. Alternatively, once the patch is applied, you're free to move the dependencies into your own requirements file and remove `django-production` altogether.
 
+By default, static files are loaded from apps and the `static` directory in your project. When building the project for deployment, you should run `manage.py collectstatic --noinput` to collect static files into the `static_collected` directory. In production, `whitenoise` will serve the files in that directory. Be sure you use the [`{% static %}` template tag](https://docs.djangoproject.com/en/dev/ref/templates/builtins/#static) in your templates so you can take advantage of the `Cache-Control` header that `whitenoise` applies. You'll probably want to add `static_collected` to your `.gitignore` (or similar) file.
+
 ## Running in production
 
 Start the webserver with `python manage.py gunicorn`.

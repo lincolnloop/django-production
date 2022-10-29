@@ -2,10 +2,14 @@ import os
 import secrets
 import shutil
 import subprocess
+import time
+from contextlib import contextmanager
 from importlib import reload
 from pathlib import Path
+from typing import Dict, List
 
 import pytest
+import urllib3
 from django.core.exceptions import ImproperlyConfigured
 from django_production.__main__ import START_MARKER, do_patch
 
@@ -20,6 +24,7 @@ def setup_testproj(tmpdir_factory):
     os.chdir(tmpdir)
     subprocess.check_call(["django-admin", "startproject", "testproj"])
     os.chdir("testproj")
+    os.mkdir("testproj/static")
     yield
     os.chdir(orig_dir)
     shutil.rmtree(tmpdir)
@@ -40,6 +45,17 @@ def django_env_prod():
     )
     yield
     os.environ = orig_env
+
+
+@contextmanager
+def start_server(cmd: List[str], env: Dict[str, str]):
+    """Start and terminate a server process in the background"""
+    proc = subprocess.Popen(cmd, env=env)
+    try:
+        time.sleep(2)
+        yield
+    finally:
+        proc.terminate()
 
 
 def test_missing_env_var():
@@ -105,4 +121,37 @@ def test_django_env_prod(django_env_prod):
 def test_django_check_deploy(django_env_prod):
     """django check --deploy passes after patching"""
     do_patch()
+    # Use subprocess to make sure all the settings are loaded fresh post-patching
     subprocess.check_call(["./manage.py", "check", "--deploy", "--fail-level=DEBUG"])
+
+
+def test_staticfiles_prod(django_env_prod):
+    """Static files are served in production with cache headers"""
+    Path("testproj/static/test.css").write_text("body { color: red; }")
+    do_patch()
+    subprocess.check_call(["./manage.py", "collectstatic", "--noinput"])
+    with start_server(
+        cmd=["./manage.py", "gunicorn"], env={"WEB_CONCURRENCY": "1", **os.environ}
+    ):
+        http = urllib3.PoolManager()
+        resp = http.request(
+            "GET",
+            "http://localhost:8000/static/test.f2b804d3e3bd.css",
+            headers={"X-Forwarded-Proto": "https"},
+            redirect=False,
+        )
+    assert resp.status == 200
+    assert resp.headers["Cache-Control"] == "max-age=315360000, public, immutable"
+
+
+def test_staticfiles_dev():
+    """Static files are served in development"""
+    Path("testproj/static/test.css").write_text("body { color: red; }")
+    do_patch()
+    with start_server(cmd=["./manage.py", "runserver"], env=dict(os.environ)):
+        http = urllib3.PoolManager()
+        resp = http.request(
+            "GET", "http://localhost:8000/static/test.css", redirect=False
+        )
+    assert resp.status == 200
+    assert "Cache-Control" not in resp.headers

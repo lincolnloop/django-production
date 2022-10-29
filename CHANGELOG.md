@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+* Static files now work out-of-the-box and `whitenoise` is always used to serve static files, not just in production.
+
 ## [0.1.0] - 2020-10-28
 
 ### Added
