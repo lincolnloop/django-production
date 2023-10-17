@@ -16,3 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Swapped out use of `environ.Env` for `environ.FileAwareEnv` to allow for loading environment variables from files in addition to standard environment variables.
+
+## [0.2.0] - 2023-10-17
+
+### Added
+
+* Swapped out use of `gunicorn` for `waitress` to default to a WSGI server written in pure Python, which will work in all environments (including Windows).
