@@ -131,7 +131,7 @@ def test_staticfiles_prod(django_env_prod):
     do_patch()
     subprocess.check_call(["./manage.py", "collectstatic", "--noinput"])
     with start_server(
-        cmd=["./manage.py", "gunicorn"], env={"WEB_CONCURRENCY": "1", **os.environ}
+        cmd=["./manage.py", "waitress", "--port=8000"], env={**os.environ}
     ):
         http = urllib3.PoolManager()
         resp = http.request(
