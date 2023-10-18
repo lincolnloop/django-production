@@ -15,7 +15,7 @@ When you install the package, it will install the following dependencies:
 
 * `whitenoise` - for serving static files
 * `django-environ` - for reading settings from environment variables
-* `django-webserver[waitress]` - for running the webserver via `manage.py`
+* `django-webserver[gunicorn]` - for running the webserver via `manage.py`
 * `django-alive` - for a health check endpoint at `/-/alive/`
 
 Running `django-production-apply` will append the `django-production` settings to your project's settings file and add the healthcheck endpoint to your project's `urlpatterns`. You can see the settings that are added in [settings.py](https://github.com/lincolnloop/django-production/blob/main/django_production/settings.py).
@@ -26,7 +26,9 @@ By default, static files are loaded from apps and the `static` directory in your
 
 ## Running in production
 
-Start the webserver with `python manage.py waitress --port=8000`.
+Start the webserver with `python manage.py gunicorn`.
+
+Set the `WEB_CONCURRENCY` environment variable to the number of gunicorn workers you want to run. Start with 2x the number of CPU cores.
 
 ### Required environment variables
 
