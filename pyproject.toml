@@ -18,7 +18,8 @@ dynamic = ["version", "description"]
 dependencies = [
     "django-environ",
     "whitenoise",
-    "django-webserver[gunicorn]",
+    "django-webserver[gunicorn]; platform_system != 'Windows'",
+    "django-webserver[waitress]; platform_system == 'Windows'",
     "django-alive",
 ]
 keywords = ["django", "production", "deployment"]
