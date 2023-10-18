@@ -21,4 +21,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Swapped out use of `gunicorn` for `waitress` to default to a WSGI server which will work in all environments (including Windows).
+* Added `waitress` as default WSGI server on Windows installs.

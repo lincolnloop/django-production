@@ -26,9 +26,15 @@ By default, static files are loaded from apps and the `static` directory in your
 
 ## Running in production
 
+### Mac OS/Linux
+
 Start the webserver with `python manage.py gunicorn`.
 
 Set the `WEB_CONCURRENCY` environment variable to the number of gunicorn workers you want to run. Start with 2x the number of CPU cores.
+
+### Windows
+
+Start the webserver with `python manage.py waitress --port=8000`.
 
 ### Required environment variables
 
