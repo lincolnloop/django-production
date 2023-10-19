@@ -7,6 +7,8 @@ from types import ModuleType
 
 import django
 
+from django_production.modifiers import add_imports
+
 START_MARKER = "\n# BEGIN: added by django-production"
 END_MARKER = "# END: added by django-production\n"
 
@@ -55,3 +57,33 @@ def do_patch():
     settings = import_module(os.environ["DJANGO_SETTINGS_MODULE"])
     patch_settings(settings)
     patch_urlconf(settings)
+
+
+def fix_file(
+    filename: str,
+    exit_zero_even_if_changed: bool,
+) -> int:
+    if filename == "-":
+        contents_bytes = sys.stdin.buffer.read()
+    else:
+        with open(filename, "rb") as fb:
+            contents_bytes = fb.read()
+
+    try:
+        contents_text_orig = contents_text = contents_bytes.decode()
+    except UnicodeDecodeError:
+        print(f"{filename} is non-utf-8 (not supported)")
+        return 1
+
+    contents_text = add_imports(contents_text, filename)
+
+    if filename == "-":
+        print(contents_text, end="")
+    elif contents_text != contents_text_orig:
+        print(f"Rewriting {filename}", file=sys.stderr)
+        with open(filename, "w", encoding="UTF-8", newline="") as f:
+            f.write(contents_text)
+
+    if exit_zero_even_if_changed:
+        return 0
+    return contents_text != contents_text_orig
