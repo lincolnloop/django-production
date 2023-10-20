@@ -16,6 +16,7 @@ classifiers = [
 ]
 dynamic = ["version", "description"]
 dependencies = [
+    "django-upgrade",
     "django-environ",
     "whitenoise",
     "django-webserver[gunicorn]",

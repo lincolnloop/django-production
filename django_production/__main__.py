@@ -7,7 +7,7 @@ from types import ModuleType
 
 import django
 
-from django_production.modifiers import add_imports
+from django_production.main import apply_fixers
 
 START_MARKER = "\n# BEGIN: added by django-production"
 END_MARKER = "# END: added by django-production\n"
@@ -55,8 +55,9 @@ def do_patch():
     sys.path.insert(0, os.getcwd())
     django.setup()
     settings = import_module(os.environ["DJANGO_SETTINGS_MODULE"])
-    patch_settings(settings)
-    patch_urlconf(settings)
+    apply_fixers(
+        contents_text=Path(settings.__file__).read_text(), filename=settings.__file__
+    )
 
 
 def fix_file(

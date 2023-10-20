@@ -11,6 +11,7 @@ from typing import Dict, List
 import pytest
 import urllib3
 from django.core.exceptions import ImproperlyConfigured
+
 from django_production.__main__ import START_MARKER, do_patch
 
 
