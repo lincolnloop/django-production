@@ -59,6 +59,20 @@ Django takes an un-opinionated approach to how it should be deployed. This makes
 **I disagree with the settings/packages you're using.**  
 Not a question, but ok. Feel free to submit an issue or pull request with your suggestion and reasoning. We appreciate the feedback and contributions. We may not accept changes that we don't feel fit the spirit of this project (remember, it's _opinionated_). If you're unsure, don't hesitate to ask.
 
+## Contribute
+
+### Setup
+
+To setup the project just install the dependencies with the tests dependencies included
+`$ pip install -e '.[test]'`
+
+if the command above doesn't work try this
+`$ pip install -e .[test]`
+
+### run the tests
+
+`$ pytest`
+
 ## Publishing a new version
 
 1. Update the version in `django_production/__init__.py`
@@ -70,5 +84,5 @@ Not a question, but ok. Feel free to submit an issue or pull request with your s
 
 ## To Do
 
-* Handle media settings for common object stores
-* Email settings including non-SMTP backends like SES
+- Handle media settings for common object stores
+- Email settings including non-SMTP backends like SES
